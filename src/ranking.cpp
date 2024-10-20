@@ -1,45 +1,107 @@
 #include "ranking.hpp"
 
-void Ranking::readFile(const std::string& filename, std::list<std::string>& words) {
-    std::ifstream arquivo(filename);
+// Construtor da classe Ranking
+Ranking::Ranking(std::string phrase) {
+    readStopWords();
+    for (const auto& filename : filenames) {
+        Document doc(filename, stopWords);
+        documents.push_back(doc); 
+    }
+    readPhrase(phrase);
+}
+
+void Ranking::readStopWords() {
+    std::ifstream arquivo("datasets/stopwords.txt");
     std::string palavra;
-    
+
     if (arquivo.is_open()) {
         while (arquivo >> palavra) {
-            words.push_back(normalize(palavra));         }
+            stopWords.insert(normalize(palavra));
+        }
         arquivo.close();
     } else {
-        std::cerr << "Erro ao abrir o arquivo: " << filename << std::endl;
+        std::cerr << "Erro ao abrir o arquivo de stopwords" << std::endl;
     }
 }
 
-std::string Ranking::normalize(const std::string &word) {
-    std::string normalized = word;
-    
-    std::transform(normalized.begin(), normalized.end(), normalized.begin(), ::tolower);
-    normalized.erase(std::remove_if(normalized.begin(), normalized.end(), [](char c) { return !std::isalnum(c) || ::ispunct(c); }), normalized.end());
-
-    return normalized;
-}
-
-int Ranking::calculateTF(const std::string &word, const std::list<std::string> &words) {
-    int count = 0;
-    
-    for (const auto &w : words) {
-        if (w == word) {
-            count++;
-        }
-    }
-    
-    return count;
-}
-
-double Ranking::calculateIDF(const std::string& term) {
+// Função que calcula o IDF (Inverse Document Frequency) de uma palavra, ou seja, a quantidade de documentos que contém a palavra
+int Ranking::calculateIDF(const std::string& term) {
     int numDocsWithTerm = 0;
     for (const auto& doc : documents) {
-        if (std::find(doc.begin(), doc.end(), term) != doc.end()) {
+        if (doc.wordsFreq.find(term) != doc.wordsFreq.end()) { 
             numDocsWithTerm++;
         }
     }
-    return log(static_cast<double>(documents.size()) / (1 + numDocsWithTerm));
+
+    return numDocsWithTerm;
+}
+
+// Função que calcula o TF/IDF de uma palavra em um documento
+int Ranking::calculateTFIDF(const std::string& term, Document doc) {
+    return doc.wordsFreq[term] * calculateIDF(term);
+}
+
+// Função que pega uma lista de palavras de busca e passa para um unordered_map, onde a chave é a palavra e o valor é o idf da palavra
+void Ranking::readPhrase(const std::string& phrase) {
+    std::istringstream iss(phrase);
+    std::string word;
+    while (iss >> word) {
+        word = normalize(word);
+        if (stopWords.find(word) != stopWords.end()) {
+            continue;
+        }
+
+        int idf = calculateIDF(word);
+        wordsidf[word] = idf;
+    }
+
+    for (const auto& doc : documents) {
+        for (const auto& word : wordsidf) {
+            int tf = 0;
+
+            if (doc.wordsFreq.find(word.first) != doc.wordsFreq.end()) {
+                tf = doc.wordsFreq.at(word.first);
+            }
+
+            wordsdoctf[word.first][doc] = tf;
+        }
+    }
+}
+
+// Função que calcula a relevância de um documento em relação a uma busca
+void Ranking::calculateRelevanceDoc() {
+    for (auto& doc : documents) {
+        double relevance = 0;
+        for (const auto& word : wordsidf) {
+            relevance += wordsdoctf[word.first][doc] * word.second;
+        }
+        
+        doc.relevance = relevance;
+    }
+}
+
+
+// Função que ordena a lista de documentos de acordo com a relevância
+void Ranking::quickSort(std::list<Document>& docs, int left, int right) {
+    if (left < right) {
+        int pivot = partition(docs, left, right);
+        quickSort(docs, left, pivot - 1);
+        quickSort(docs, pivot + 1, right);
+    }
+}
+
+int Ranking::partition(std::list<Document>& docs, int left, int right) {
+    auto pivot = std::next(docs.begin(), right);
+    int i = left - 1;
+
+    for (int j = left; j < right; j++) {
+        auto doc = std::next(docs.begin(), j);
+        if (doc->relevance > pivot->relevance) {
+            i++;
+            std::swap(*std::next(docs.begin(), i), *doc);
+        }
+    }
+
+    std::swap(*std::next(docs.begin(), i + 1), *pivot);
+    return i + 1;
 }

@@ -353,7 +353,7 @@ CEFET-MG Campus V <br>
 [telegram-autor1]: https://t.me/alvarengazv
 [gmail-autor1]: mailto:gui.alvarengas234@gmail.com
 
-[linkedin-autor2]: https://www.linkedin.com/in/maria-eduarda-teixeira-souza-2a2b3a254   
+[linkedin-autor2]: https://www.linkedin.com/in/dudatsouza/
 [telegram-autor2]: https://t.me/dudat_18
 [gmail-autor2]: mailto:dudateixeirasouza@gmail.com
 
