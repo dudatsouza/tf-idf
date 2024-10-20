@@ -5,7 +5,7 @@ Ranking::Ranking(std::string phrase) {
     readStopWords();
     for (const auto& filename : filenames) {
         Document doc(filename, stopWords);
-        documents.push_back(doc); 
+        documents.push_back(doc);
     }
     readPhrase(phrase);
 }
@@ -28,7 +28,7 @@ void Ranking::readStopWords() {
 int Ranking::calculateIDF(const std::string& term) {
     int numDocsWithTerm = 0;
     for (const auto& doc : documents) {
-        if (doc.wordsFreq.find(term) != doc.wordsFreq.end()) { 
+        if (doc.wordsFreq.find(term) != doc.wordsFreq.end()) {
             numDocsWithTerm++;
         }
     }
@@ -63,7 +63,8 @@ void Ranking::readPhrase(const std::string& phrase) {
                 tf = doc.wordsFreq.at(word.first);
             }
 
-            wordsdoctf[word.first][doc] = tf;
+            std::pair<std::string, Document> wordsdoc = std::make_pair(word.first, doc);
+            wordsdoctf[wordsdoc] = tf;
         }
     }
 }
@@ -73,13 +74,13 @@ void Ranking::calculateRelevanceDoc() {
     for (auto& doc : documents) {
         double relevance = 0;
         for (const auto& word : wordsidf) {
-            relevance += wordsdoctf[word.first][doc] * word.second;
+            std::pair<std::string, Document> wordsdoc = std::make_pair(word.first, doc);
+            relevance += wordsdoctf[wordsdoc] * word.second;
         }
-        
+
         doc.relevance = relevance;
     }
 }
-
 
 // Função que ordena a lista de documentos de acordo com a relevância
 void Ranking::quickSort(std::list<Document>& docs, int left, int right) {
