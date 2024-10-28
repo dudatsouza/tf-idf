@@ -67,16 +67,19 @@ CEFET-MG Campus V <br>
 
 <details> 
   <summary>
-    <b style='font-size: 12px'> Abstract </b>
+    <b style='font-size: 12px'> Abstract </b> 
   </summary>
+  Este trabalho tem como objetivo a implementação de um algoritmo de ranqueamento de documentos, utilizando a técnica de ranqueamento TF-IDF. O algoritmo foi implementado em C++ e testado em diferentes cenários, com o intuito de avaliar a eficiência e a precisão do método de ranqueamento. Os resultados obtidos mostram que o algoritmo é capaz de ranquear documentos de forma eficiente porém com alguns problemas de precisão. 
   <br><br>
-  🔑 <b>Keywords:</b> 
+  🔑 <b>Keywords:</b> TF/IDF, Ranqueamento de Documentos, Implementação.
 <br>
 </details>
 
 ## 🔍 Introdução
 
 <div align='justify'>
+
+
 
 
 </div>
@@ -297,7 +300,7 @@ CEFET-MG Campus V <br>
 
 <div align="center">
   <br><br>
-     <i>Guilherme Alvarenga de Azevedo - Graduando - 3º Período de Engenharia de Computação @ CEFET-MG</i>
+     <i>Guilherme Alvarenga de Azevedo - Graduando - 4º Período de Engenharia de Computação @ CEFET-MG</i>
   <br><br>
   
   [![Gmail][gmail-badge]][gmail-autor1]
@@ -306,7 +309,7 @@ CEFET-MG Campus V <br>
   
   
   <br><br>
-     <i>Maria Eduarda Teixeira Souza - Graduando - 3º Período de Engenharia de Computação @ CEFET-MG</i>
+     <i>Maria Eduarda Teixeira Souza - Graduando - 4º Período de Engenharia de Computação @ CEFET-MG</i>
   <br><br>
   
   [![Gmail][gmail-badge]][gmail-autor2]
@@ -314,7 +317,7 @@ CEFET-MG Campus V <br>
   [![Telegram][telegram-badge]][telegram-autor2]
   
   <br><br>
-     <i>Matheus Emanuel da Silva - Graduando - 3º Período de Engenharia de Computação @ CEFET-MG</i>
+     <i>Matheus Emanuel da Silva - Graduando - 4º Período de Engenharia de Computação @ CEFET-MG</i>
   <br><br>
   
   [![Gmail][gmail-badge]][gmail-autor3]
