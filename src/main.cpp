@@ -1,5 +1,5 @@
-#include "ranking.hpp"
 #include "document.hpp"
+#include "ranking.hpp"
 
 // Aquivos de texto que serão lidos
 // doc1.txt = A Mao e A Luva - Machado de Assis
@@ -8,17 +8,21 @@
 // doc4.txt = Quincas Borba - Machado de Assis
 // doc5.txt = A semana Texto-fonte: Obra Completa de Machado de Assis
 // doc6.txt = Relação do formidavel, e lastimoso terremoto succedido no Reino de Valença
-        
+
 int main() {
     std::vector<std::string> phrases = {
-            "A Quincas Borba.", 
-            "A fé pode mover montanhas.", 
-            "Valença."
+        "A Quincas Borba.",
+        "A fé pode mover montanhas.",
+        "Valença.",
+        "Deus e a Terra",
+        "amor vida morte",
+        "leite café pão",
+        "grande alma pequeno corpo",
     };
 
     for (const auto phrase : phrases) {
         std::cout << "Busca: " << phrase << std::endl;
-        
+
         Ranking ranking(phrase);
 
         ranking.calculateRelevanceDoc();
@@ -30,7 +34,7 @@ int main() {
         }
 
         std::cout << std::endl;
-    } 
+    }
 
     return 0;
 }

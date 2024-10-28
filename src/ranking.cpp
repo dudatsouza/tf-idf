@@ -24,8 +24,8 @@ void Ranking::readStopWords() {
     }
 }
 
-// Função que calcula o IDF (Inverse Document Frequency) de uma palavra, ou seja, a quantidade de documentos que contém a palavra
-int Ranking::calculateIDF(const std::string& term) {
+// Função que calcula o IDF (Inverse Document Frequency) de uma palavra, ou seja, a quantidade de documentos que contêm a palavra
+double Ranking::calculateIDF(const std::string& term) {
     int numDocsWithTerm = 0;
     for (const auto& doc : documents) {
         if (doc.wordsFreq.find(term) != doc.wordsFreq.end()) {
@@ -33,11 +33,15 @@ int Ranking::calculateIDF(const std::string& term) {
         }
     }
 
-    return numDocsWithTerm;
+    double ratio = (double)(documents.size() + 1) / (double)(numDocsWithTerm + 1);
+
+    double idf = log10(ratio);
+
+    return idf;
 }
 
 // Função que calcula o TF/IDF de uma palavra em um documento
-int Ranking::calculateTFIDF(const std::string& term, Document doc) {
+double Ranking::calculateTFIDF(const std::string& term, Document doc) {
     return doc.wordsFreq[term] * calculateIDF(term);
 }
 
@@ -51,7 +55,7 @@ void Ranking::readPhrase(const std::string& phrase) {
             continue;
         }
 
-        int idf = calculateIDF(word);
+        double idf = calculateIDF(word);
         wordsidf[word] = idf;
     }
 

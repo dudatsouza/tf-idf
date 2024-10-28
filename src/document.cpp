@@ -10,15 +10,16 @@ Document::Document(const std::string &filename, std::unordered_set<std::string> 
 // Função que lê um arquivo e armazena as palavras em uma lista
 void Document::readFile() {
     std::ifstream arquivo(this->filename);
-    std::string palavra;
-    
+    std::string palavra, normalized;
+
     if (arquivo.is_open()) {
         while (arquivo >> palavra) {
-            if (stopWords.find(normalize(palavra)) != stopWords.end()) {
+            normalized = normalize(palavra);
+            if (stopWords.find(normalized) != stopWords.end()) {
                 continue;
             }
 
-            wordsFreq[normalize(palavra)]++;
+            wordsFreq[normalized]++;
         }
         arquivo.close();
     } else {
@@ -31,9 +32,10 @@ void Document::readFile() {
 // Função que normaliza uma palavra, removendo caracteres especiais e transformando em minúsculas
 std::string normalize(const std::string &word) {
     std::string normalized = word;
-    
+
     std::transform(normalized.begin(), normalized.end(), normalized.begin(), ::tolower);
-    normalized.erase(std::remove_if(normalized.begin(), normalized.end(), [](char c) { return !std::isalnum(c) || ::ispunct(c); }), normalized.end());
+    normalized.erase(std::remove_if(normalized.begin(), normalized.end(), ::ispunct), normalized.end());
+    // normalized.erase(std::remove_if(normalized.begin(), normalized.end(), [](char c) { return !std::isalnum(c) || ::ispunct(c); }), normalized.end());
 
     return normalized;
 }

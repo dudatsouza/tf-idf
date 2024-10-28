@@ -31,15 +31,15 @@ class Ranking {
 
     std::unordered_set<std::string> stopWords;
 
-    std::unordered_map<std::string, int> wordsidf;
+    std::unordered_map<std::string, double> wordsidf;
     // std::unordered_map<std::string, std::unordered_map<Document, int>> wordsdoctf;
     std::unordered_map<std::pair<std::string, Document>, int, pairHash> wordsdoctf;
 
     void readStopWords();
     void readPhrase(const std::string &phrase);
 
-    int calculateIDF(const std::string &word);
-    int calculateTFIDF(const std::string &term, Document doc);
+    double calculateIDF(const std::string &word);
+    double calculateTFIDF(const std::string &term, Document doc);
     void calculateRelevanceDoc();
     void quickSort(std::list<Document> &documents, int left, int right);
     int partition(std::list<Document> &documents, int left, int right);
