@@ -31,9 +31,9 @@ class Ranking {
 
     std::unordered_set<std::string> stopWords;
 
+    std::list<std::string> phraseWords;
+
     std::unordered_map<std::string, double> wordsidf;
-    // std::unordered_map<std::string, std::unordered_map<Document, int>> wordsdoctf;
-    std::unordered_map<std::pair<std::string, Document>, int, pairHash> wordsdoctf;
 
     void readStopWords();
     void readPhrase(const std::string &phrase);

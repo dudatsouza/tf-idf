@@ -28,21 +28,39 @@ void Ranking::readStopWords() {
 double Ranking::calculateIDF(const std::string& term) {
     int numDocsWithTerm = 0;
     for (const auto& doc : documents) {
-        if (doc.wordsFreq.find(term) != doc.wordsFreq.end()) {
-            numDocsWithTerm++;
+        if (OPTIMIZE) {
+            if (doc.wordsFreq.find(term) != doc.wordsFreq.end()) {
+                numDocsWithTerm++;
+            }
+        } else {
+            auto it = std::find_if(doc.docWords.begin(), doc.docWords.end(), [&term](const WordFreq& word) { return word.word == term; });
+            if (it != doc.docWords.end()) {
+                numDocsWithTerm++;
+            }
         }
     }
 
     double ratio = (double)(documents.size() + 1) / (double)(numDocsWithTerm + 1);
 
-    double idf = log10(ratio);
+    double idf = log2(ratio);
 
     return idf;
 }
 
 // Função que calcula o TF/IDF de uma palavra em um documento
 double Ranking::calculateTFIDF(const std::string& term, Document doc) {
-    return doc.wordsFreq[term] * calculateIDF(term);
+    double idf = calculateIDF(term);
+    if (OPTIMIZE) {
+        return ((double)doc.wordsFreq[term] / (double)doc.totalWords) * idf;
+    } else {
+        auto it = std::find_if(doc.docWords.begin(), doc.docWords.end(), [&term](const WordFreq& word) { return word.word == term; });
+        double tf = 0;
+        if (it != doc.docWords.end()) {
+            tf = it->freq;
+        }
+
+        return ((double)tf / (double)doc.totalWords) * idf;
+    }
 }
 
 // Função que pega uma lista de palavras de busca e passa para um unordered_map, onde a chave é a palavra e o valor é o idf da palavra
@@ -51,24 +69,19 @@ void Ranking::readPhrase(const std::string& phrase) {
     std::string word;
     while (iss >> word) {
         word = normalize(word);
-        if (stopWords.find(word) != stopWords.end()) {
-            continue;
+
+        size_t pos;
+        while ((pos = word.find_first_of(".,;:!?()[]{}«»<>-_\\/\"'ªº°§&*@#$+")) != std::string::npos) {
+            word.replace(pos, 1, " ");
         }
 
-        double idf = calculateIDF(word);
-        wordsidf[word] = idf;
-    }
-
-    for (const auto& doc : documents) {
-        for (const auto& word : wordsidf) {
-            int tf = 0;
-
-            if (doc.wordsFreq.find(word.first) != doc.wordsFreq.end()) {
-                tf = doc.wordsFreq.at(word.first);
+        std::istringstream issInside(word);
+        while (issInside >> word) {
+            if (stopWords.find(word) != stopWords.end()) {
+                continue;
             }
 
-            std::pair<std::string, Document> wordsdoc = std::make_pair(word.first, doc);
-            wordsdoctf[wordsdoc] = tf;
+            phraseWords.push_back(word);
         }
     }
 }
@@ -77,9 +90,8 @@ void Ranking::readPhrase(const std::string& phrase) {
 void Ranking::calculateRelevanceDoc() {
     for (auto& doc : documents) {
         double relevance = 0;
-        for (const auto& word : wordsidf) {
-            std::pair<std::string, Document> wordsdoc = std::make_pair(word.first, doc);
-            relevance += wordsdoctf[wordsdoc] * word.second;
+        for (const auto& word : phraseWords) {
+            relevance += calculateTFIDF(word, doc);
         }
 
         doc.relevance = relevance;
