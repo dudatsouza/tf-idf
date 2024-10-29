@@ -1,7 +1,7 @@
 <a name="readme-topo"></a>
 
 <h1 align='center'>
-  📊 Ranqueamento de Documentos 
+  📊 Ranqueamento de Documentos - TF/IDF
 </h1>
 
 <div align='center'>
@@ -79,8 +79,9 @@ CEFET-MG Campus V <br>
 
 <div align='justify'>
 
+  Este [trabalho][trabalho-url] (Ranqueamento de Documentos) foi proposto na disciplina de Algoritmos e Estruturas de Dados II (AEDSII) pelo professor [Michel Pires da Silva][github-prof].
 
-
+  O ranqueamento de documentos é uma técnica utilizada para ordenar documentos de acordo com sua relevância em relação a uma consulta. A técnica TF-IDF (Term Frequency-Inverse Document Frequency) é uma das mais utilizadas nesse contexto e, por sua simplicidade e eficiência, foi escolhida para ser testada neste trabalho.
 
 </div>
 
@@ -100,9 +101,11 @@ CEFET-MG Campus V <br>
 <div align="justify">
 
   ### Objetivo Geral
-  O objetivo geral deste estudo é ...
+  O objetivo deste trabalho é de, através da utilização das estruturas de dados já estudadas até o momento, implementar um algoritmo de ranqueamento de documentos que lança mão da técnica TF-IDF (Term Frequency-Inverse Document Frequency).
 
   ### Objetivos Específicos
+  - Abordar e reforçar conceitos de análise de algoritmos e estruturas de dados já explorados no contexto da disciplina.
+  - Refletir sobre como novas estruturas de dados, como as árvores binárias e os grafos, podem influenciar na resolução do problema proposto e quais ganhos de eficiência poderiam ser alcançados.
 
 </div>
 
@@ -118,15 +121,27 @@ CEFET-MG Campus V <br>
 
 <div align="justify">
 
+  As abordagens propostas para otimizar o algoritmo de ranqueamento foram implementadas em C++, utilizando a IDE Visual Studio Code para o desenvolvimento do código-fonte. O projeto foi organizado em um diretório principal, contendo subdiretórios para armazenar os arquivos de código-fonte e os `datasets` utilizados. A solução proposta com a aplicação da técnica TF-IDF para o ranqueamento foi dividida em classes, cada uma responsável por uma etapa do processo. A primeira, (`Ranking`)[ranking.hpp], recebe as frases a serem buscadas, armazena as `stopwords` e lê os documentos para criar objetos da classe `Document`, que armazenam os termos normalizados e suas frequências. Após isso, existe a etapa de cálculo da relevância dos termos, através de seus fatores TF/IDF em cada documento. E, por fim, a ordenação dos documentos em ordem decrescente de relevância.
 
   ### 📁 Arquivos 
 
-  Para a implementação do algoritmo, o projeto foi organizado em um diretório principal, contendo subdiretórios para armazenar os arquivos de código-fonte, os datasets utilizados e os arquivos de saída. A seguir, são apresentados os arquivos e diretórios utilizados no projeto:
+  Para a implementação do algoritmo, o projeto foi organizado em um diretório principal, contendo subdiretórios para armazenar os arquivos de código-fonte e os datasets utilizados. A seguir, são apresentados os arquivos e diretórios utilizados no projeto:
 
   - [`datasets/`](datasets): diretório contendo os datasets utilizados.
+    - [`doc1.txt`](datasets/doc1.txt): Primeiro documento a ser consultado, o livro "A Mão e A Luva", de Machado de Assis.
+    - [`doc2.txt`](datasets/doc2.txt): Segundo documento a ser consultado, A Bíblia Sagrada.
+    - [`doc3.txt`](datasets/doc3.txt): Terceiro documento a ser consultado, o livro "Dom Casmurro", de Machado de Assis.
+    - [`doc4.txt`](datasets/doc4.txt): Quarto documento a ser consultado, o livro "Quincas Borba", de Machado de Assis.
+    - [`doc5.txt`](datasets/doc5.txt): Quinto documento a ser consultado, o livro "A Semana", de Machado de Assis.
+    - [`doc6.txt`](datasets/doc6.txt): Sexto documento a ser consultado, o relato histórico "Relação do formidavel, e lastimoso terremoto succedido no Reino de Valença".
+    - [`stopwords.txt`](datasets/stopwords.txt): arquivo contendo as `stopwords` utilizadas da língua portuguesa. Isto é, as palavras que não possuem relevância para o ranqueamento dos documentos.
 
   - [`src/`](src): diretório contendo os arquivos de código-fonte do projeto.
-    - [`main.cpp`](src/main.cpp): arquivo contendo a função principal do programa, responsável por realizar a classificação das mãos de pôquer.
+    - [`document.cpp`](src/document.cpp): Arquivo de código-fonte que contém a implementação dos métodos da classe `Document`, responsável por ler e representar os documentos, além de normalizar os termos que os compõem.
+    - [`document.hpp`](src/document.hpp): Arquivo de cabeçalho que contém a definição da classe `Document`, responsável por representar um documento a ser ranqueado.
+    - [`main.cpp`](src/main.cpp): arquivo contendo a função principal do programa, responsável por fazer chamadas de funções que realizam  o ranqueamento dos documentos.
+    - [`ranking.cpp`](src/ranking.cpp): Arquivo de código-fonte que contém a implementação dos métodos da classe `Ranking`, responsável por ler as frases a serem buscadas, armazenar as `stopwords` e calcular o fator TF/IDF de cada documento para cada termo e ranqueá-los em ordem decrescente.
+    - [`ranking.hpp`](src/ranking.hpp): Arquivo de cabeçalho que contém a definição da classe `Ranking`, responsável por ranquear os documentos.
 
   - [`.gitignore`](.gitignore): arquivo contendo a lista de arquivos e diretórios a serem ignorados pelo Git.
   - [`make.sh`](make.sh): arquivo de script para compilar o código-fonte do projeto.
@@ -138,8 +153,19 @@ CEFET-MG Campus V <br>
   ```.
   |
   ├── datasets
+  │   │   └── doc1.txt
+  │   │   └── doc2.txt
+  │   │   └── doc3.txt
+  │   │   └── doc4.txt
+  │   │   └── doc5.txt
+  │   │   └── doc6.txt
+  │   │   └── stopwords.txt
   ├── src
+  │   │   └── document.cpp
+  │   │   └── document.hpp
   │   │   └── main.cpp
+  │   │   └── ranking.cpp
+  │   │   └── ranking.hpp
   ├── .gitignore
   ├── make.sh
   ├── makefile
@@ -164,7 +190,7 @@ CEFET-MG Campus V <br>
     - [`vector`](https://www.cplusplus.com/reference/vector/): biblioteca para manipulação de vetores.
     - [`unordered_map`](https://www.cplusplus.com/reference/unordered_map/): biblioteca para manipulação de tabelas hash.
     - [`unordered_set`](https://www.cplusplus.com/reference/unordered_set/): biblioteca para manipulação de conjuntos hash.
-    - [`pthread.h`](https://pubs.opengroup.org/onlinepubs/7908799/xsh/pthread.h.html): biblioteca para programação paralela.
+    - [`list`](https://cplusplus.com/reference/list/list/): biblioteca para utilização de listas duplamente encadeadas.
   
 </div>
 
@@ -338,6 +364,7 @@ CEFET-MG Campus V <br>
 [make-url]: https://www.gnu.org/software/make/manual/make.html
 [cpp-badge]: https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white
 [cpp-url]: https://en.cppreference.com/w/cpp
+[trabalho-url]: https://drive.google.com/file/d/1-IHbGaA1BIC6_CMBydOC-NbV2bCERc8r/view?usp=sharing
 [github-prof]: https://github.com/mpiress
 [main-ref]: src/main.cpp
 [branchAMM-url]: https://github.com/alvarengazv/trabalhosAEDS1/tree/AlgoritmosMinMax
