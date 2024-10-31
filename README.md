@@ -106,7 +106,7 @@ CEFET-MG Campus V <br>
   - $f_{t,d}$ é a frequência do termo t no documento d.
   - $\sum_{t' \in d} f_{t',d}$ é a soma das frequências de todos os termos no documento d. 
 
-  ## IDF (Inverse Document Frequency)
+  ### IDF (Inverse Document Frequency)
   É a frequência inversa de um termo em todos os documentos. Ela é calculada apartir da quantidade de documentos que contém um termo, dividido pelo total de documentos. A frequência inversa de um termo em todos os documentos é calculada pela fórmula: 
 
   $$idf_t = \log\left(\frac{N}{n_t}\right)$$
@@ -168,37 +168,36 @@ CEFET-MG Campus V <br>
 
   ### Leitura dos Documentos
 
-  No início do programa, todos os documentos são lidos e cada palavra é adicionada em uma lista ou em uma Hash Table. No código, essa parte está implementada nas funções `readFile()` e `addWord()` localizada no arquivo `document.cpp`. Durante a leitura, cada palavra é processada e armazenada conforme a estrutura de dados selecionada. A Hash Table (`wordsFreq`) foi utilizada na versão otimizada devido ao acesso rápido, o que melhora o desempenho ao lidar com grandes quantidades de documentos e termos. Já a lista encadeada (`docWords`) foi usada como uma alternativa para explorar a implementação com estruturas de dados clássicas, atendendo ao objetivo pedagógico do projeto e permitindo uma comparação direta entre as duas abordagens.
+  No início do programa, todos os documentos são lidos e cada palavra é adicionada em uma lista ou em uma Hash Table. No código, essa parte está implementada nas funções [`readFile()`](src/document.cpp) e [`addWord()`](src/document.cpp) localizada no arquivo [`document.cpp`](src/document.cpp). Durante a leitura, cada palavra é processada e armazenada conforme a estrutura de dados selecionada. A Hash Table ([`wordsFreq`](src/document.hpp)) foi utilizada na versão otimizada devido ao acesso rápido, o que melhora o desempenho ao lidar com grandes quantidades de documentos e termos. Já a lista encadeada ([`docWords`](src/document.cpp)) foi usada como uma alternativa para explorar a implementação com estruturas de dados clássicas, atendendo ao objetivo pedagógico do projeto e permitindo uma comparação direta entre as duas abordagens.
 
-  Cada palavra que foi armazenada na estrutura de dados foi colocada como uma `struct WordFreq` que contém o termo e a frequência do termo no documento. A estrutura `WordFreq` foi definida no arquivo `document.hpp`.
+  Cada palavra que foi armazenada na estrutura de dados foi colocada como uma [`struct WordFreq`](src/document.hpp) que contém o termo e a frequência do termo no documento. A estrutura [`wordsFreq`](src/document.hpp) foi definida no arquivo [`document.hpp`](src/document.hpp).
 
-  A escolha entre Hash Table e lista é feita por meio de um parâmetro de configuração definido pelo usuário em um `#DEFINE` no programa. Essa flexibilidade foi implementada para permitir a comparação do desempenho e da eficácia de ambas as abordagens.
+  A escolha entre Hash Table e lista é feita por meio de um parâmetro de configuração definido pelo usuário em um [`#define OPTIMIZE`](src/document.hpp) no programa. Essa flexibilidade foi implementada para permitir a comparação do desempenho e da eficácia de ambas as abordagens.
 
   ### Normalização dos Textos
 
-  As palavras lidas dos textos são armazenadas nas estruturas em uma forma normalizada. Durante o processo de normalização, são removidos caracteres não alfanuméricos, acentos são retirados das letras e as palavras são convertidas para letras minúsculas. Esse processo é implementado na função `normalize(const std::string &word)`, também presente no arquivo `document.cpp`. A função utiliza a biblioteca `<algorithm>` para conversão em minúsculas e uma lógica customizada para remoção de acentos e caracteres especiais. Esse procedimento visa garantir que palavras semelhantes, mas escritas de formas ligeiramente diferentes, sejam tratadas como equivalentes, aumentando a precisão do ranqueamento.
+  As palavras lidas dos textos são armazenadas nas estruturas em uma forma normalizada. Durante o processo de normalização, são removidos caracteres não alfanuméricos, acentos são retirados das letras e as palavras são convertidas para letras minúsculas. Esse processo é implementado na função [`normalize()`](src/document.cpp), também presente no arquivo [`document.cpp`](src/document.cpp). A função utiliza a biblioteca [`<algorithm>`](https://www.cplusplus.com/reference/algorithm/) a função [`std::transform()`](https://www.cplusplus.com/reference/algorithm/transform/) para conversão em minúsculas e uma lógica customizada para remoção de acentos e caracteres especiais. Esse procedimento visa garantir que palavras semelhantes, mas escritas de formas ligeiramente diferentes, sejam tratadas como equivalentes, aumentando a precisão do ranqueamento. Além disso, contém o `namespace` [`std::codecvt_utf8_utf16`](https://www.cplusplus.com/reference/locale/codecvt_utf8_utf16/), da biblioteca [`<codecvt>`](https://www.cplusplus.com/reference/locale/codecvt/)  temos as classes [`std::wstring_convert`](https://www.cplusplus.com/reference/locale/wstring_convert/) e [`std::codecvt_utf8_utf16`](https://www.cplusplus.com/reference/locale/codecvt_utf8_utf16/), que são utilizadas para converter strings de e para wide strings e também [`<cwchar>`](https://www.cplusplus.com/reference/cwchar/), que contém funções para manipulação de wide strings.
 
   ### Cálculo do TF-IDF
 
-  Para ranquear os documentos, foi utilizado o algoritmo TF-IDF (Term Frequency-Inverse Document Frequency). A implementação do cálculo do TF-IDF está presente no arquivo `ranking.cpp`, nas funções `calculareIDF()`, `calculateTFIDF()` e `calculateRelevanceDoc()`. Não é necessário calcular o TF diretamente pois a frequência de cada termo em cada documento já foi calculada durante a leitura dos documentos. 
+  Para ranquear os documentos, foi utilizado o algoritmo TF-IDF (Term Frequency-Inverse Document Frequency). A implementação do cálculo do TF-IDF está presente no arquivo [`ranking.cpp`](src/ranking.cpp), nas funções [`calculareIDF()`](src/ranking.cpp), [`calculateTFIDF()`](src/ranking.cpp) e [`calculateRelevanceDoc()`](src/ranking.cpp). Não é necessário calcular o TF diretamente pois a frequência de cada termo em cada documento já foi calculada durante a leitura dos documentos. 
 
-  Primeiro, é calculada a frequência de cada termo em cada documento (TF) e armazenada junto com o termo na estrutura que estiver sendo utilizada na struct `WordFreq`. Em seguida, é calculada a frequência inversa de cada termo em todos os documentos (IDF) e armazenada em uma Hash Table (`wordsidf`).
+  Primeiro, é calculada a frequência de cada termo em cada documento (TF) e armazenada junto com o termo na estrutura que estiver sendo utilizada na struct [`WordFreq`](src/document.hpp). Em seguida, é calculada a frequência inversa de cada termo em todos os documentos (IDF) e armazenada em uma Hash Table ([`wordsidf`](src/document.hpp)).
 
 
   ### Ranqueamento dos Documentos
 
-  Após o cálculo do TF-IDF, os documentos são ranqueados em ordem crescente de relevância. A relevância de cada documento é calculada somando-se os fatores TF-IDF de cada termo da frase buscada em cada documento. A relevância de cada documento é armazenada na váriavel `relevance` que é paâmetro da classe `Document`. A função `calculateRelevanceDoc()` é responsável por calcular a relevância de cada documento. 
+  Após o cálculo do TF-IDF, os documentos são ranqueados em ordem crescente de relevância. A relevância de cada documento é calculada somando-se os fatores TF-IDF de cada termo da frase buscada em cada documento. A relevância de cada documento é armazenada na váriavel `relevance` que é paâmetro da classe [Document](src/document.hpp). A função [`calculateRelevanceDoc()`](src/ranking.cpp) é responsável por calcular a relevância de cada documento. 
 
   ### Ordenação dos Documentos
 
-  Após o cálculo da relevância dos documentos, eles são ordenados em ordem crescente de relevância. A ordenação é feita utilizando a função `quickSort()` e a função `partition()` que estão presentes no arquivo `ranking.cpp`. A função `quickSort()` é responsável por chamar a função `partition()` recursivamente para ordenar os documentos. A função `partition()` é responsável por dividir o vetor de documentos em duas partes e ordená-las de acordo com a relevância. 
+  Após o cálculo da relevância dos documentos, eles são ordenados em ordem crescente de relevância. A ordenação é feita utilizando a função [`quickSort()`](src/ranking.cpp) e a função [`partition()`](src/ranking.cpp) que estão presentes no arquivo [`ranking.cpp`](src/ranking.cpp). A função [`quickSort()`](src/ranking.cpp) é responsável por chamar a função [`partition()`](src/ranking.cpp) recursivamente para ordenar os documentos. A função [`partition()`](src/ranking.cpp) é responsável por dividir o vetor de documentos em duas partes e ordená-las de acordo com a relevância. 
   
   Com a orientação do professor, tivemos duas opções de implementação para a ordenação dos documentos: a primeira foi a utilização do algoritmo de ordenação QuickSort e a segunda foi a utilização do algoritmo de ordenação MergeSort. A escolha do algoritmo de ordenação foi feita por meio de um pequeno estudo de desempenho, dificuldade de implementação e complexidade do algoritmo. A implementação do algoritmo de ordenação QuickSort foi escolhida por ser um algoritmo de ordenação mais simples e eficiente para o problema proposto.
 
   ### Estrutura de Dados Utilizada
 
-  Durante o desenvolvimento do algoritmo, foram exploradas diferentes estruturas de dados. A Hash Table foi escolhida para a versão otimizada devido ao acesso rápido, o que melhora o desempenho do programa ao lidar com grandes quantidades de documentos e termos. A lista encadeada foi utilizada como uma opção alternativa, atendendo ao objetivo pedagógico de explorar a implementação com estruturas clássicas e compará-la à abordagem otimizada. No código, a estrutura de Hash Table foi implementada com a biblioteca `<unordered_map>`, enquanto a lista encadeada foi implementada utilizando a `std::list` da biblioteca padrão do C++.  
-
+  Durante o desenvolvimento do algoritmo, foram exploradas diferentes estruturas de dados. A Hash Table foi escolhida para a versão otimizada devido ao acesso rápido, o que melhora o desempenho do programa ao lidar com grandes quantidades de documentos e termos. A lista encadeada foi utilizada como uma opção alternativa, atendendo ao objetivo pedagógico de explorar a implementação com estruturas clássicas e compará-la à abordagem otimizada. No código, a estrutura de Hash Table foi implementada com a biblioteca [`<unordered_map>`](https://www.cplusplus.com/reference/unordered_map/), enquanto a lista encadeada foi implementada utilizando a [`std::list`](https://www.cplusplus.com/reference/list/list/) da biblioteca padrão do C++.
 
 </div>
 
@@ -206,7 +205,7 @@ CEFET-MG Campus V <br>
 
 <div align="justify">
 
-  As abordagens propostas para otimizar o algoritmo de ranqueamento foram implementadas em C++, utilizando a IDE Visual Studio Code para o desenvolvimento do código-fonte. O projeto foi organizado em um diretório principal, contendo subdiretórios para armazenar os arquivos de código-fonte e os datasets utilizados. A solução proposta com a aplicação da técnica TF-IDF para o ranqueamento foi dividida em classes, cada uma responsável por uma etapa do processo. A primeira, [Ranking](ranking.hpp), recebe as frases a serem buscadas, armazena as stopwords e lê os documentos para criar objetos da classe [Document](document.hpp), que armazenam os termos normalizados e suas frequências. Após isso, existe a etapa de cálculo da relevância dos termos, através de seus fatores TF/IDF em cada documento. E, por fim, a ordenação dos documentos em ordem decrescente de relevância.
+  As abordagens propostas para otimizar o algoritmo de ranqueamento foram implementadas em C++, utilizando a IDE Visual Studio Code para o desenvolvimento do código-fonte. O projeto foi organizado em um diretório principal, contendo subdiretórios para armazenar os arquivos de código-fonte e os datasets utilizados. A solução proposta com a aplicação da técnica TF-IDF para o ranqueamento foi dividida em classes, cada uma responsável por uma etapa do processo. A primeira, [Ranking](src/ranking.hpp), recebe as frases a serem buscadas, armazena as stopwords e lê os documentos para criar objetos da classe [Document](src/document.hpp), que armazenam os termos normalizados e suas frequências. Após isso, existe a etapa de cálculo da relevância dos termos, através de seus fatores TF/IDF em cada documento. E, por fim, a ordenação dos documentos em ordem decrescente de relevância.
 
   ### 📁 Arquivos 
 
@@ -271,12 +270,17 @@ CEFET-MG Campus V <br>
   - [bits/stdc++.h](https://www.geeksforgeeks.org/bitsstdc-h-c-include/): biblioteca que inclui todas as bibliotecas padrão da linguagem C++. Veja abaixo as bibliotecas que usamos da bits/stdc++.h:
     - [iostream](https://www.cplusplus.com/reference/iostream/): biblioteca padrão de entrada e saída de dados.
     - [fstream](https://www.cplusplus.com/reference/fstream/): biblioteca para manipulação de arquivos. 
+    - [sstream](https://www.cplusplus.com/reference/sstream/): biblioteca para manipulação de strings.
     - [string](https://www.cplusplus.com/reference/string/): biblioteca para manipulação de strings.
     - [cmath](https://www.cplusplus.com/reference/cmath/): biblioteca para funções matemáticas.
     - [vector](https://www.cplusplus.com/reference/vector/): biblioteca para manipulação de vetores.
     - [unordered_map](https://www.cplusplus.com/reference/unordered_map/): biblioteca para manipulação de tabelas hash.
     - [unordered_set](https://www.cplusplus.com/reference/unordered_set/): biblioteca para manipulação de conjuntos hash.
     - [list](https://cplusplus.com/reference/list/list/): biblioteca para utilização de listas duplamente encadeadas.
+    - [algorithm](https://www.cplusplus.com/reference/algorithm/): biblioteca para utilização de algoritmos.
+    - [codecvt](https://www.cplusplus.com/reference/locale/codecvt/): biblioteca para manipulação de strings.
+    - [cwchar](https://www.cplusplus.com/reference/cwchar/): biblioteca para manipulação de wide strings.
+    - [locale](https://www.cplusplus.com/reference/locale/): biblioteca para manipulação de localidades.
   
 </div>
 
@@ -286,10 +290,111 @@ CEFET-MG Campus V <br>
 
 <div align="justify">
 
+  Para a implementação do algoritmo, temos dois arquivos de cabeçalho e dois arquivos de código-fonte. Os arquivos de cabeçalho são responsáveis por definir as classes e estruturas utilizadas no projeto, enquanto os arquivos de código-fonte contêm a implementação dos métodos dessas classes e estruturas. Os arquivos de cabeçalho são:
+  
+  #### [document.hpp](src/document.hpp)
+
+  Neste arquivo, temos a definição da classe [`Document`](src/document.hpp), e inclui as declarações dos métodos e atributos que manipulam os documentos. A seguir estão os métodos e atributos da classe [`Document`](src/document.hpp):
+  - [`#define OPTIMIZE 1`](src/document.hpp): define o tipo de estrutura de dados a ser utilizada. Se `OPTIMIZE` for 1, a estrutura de dados utilizada será a Hash Table. Se `OPTIMIZE` for 0, a estrutura de dados utilizada será a lista encadeada.
+  - [`std::string normalize(const std::string &word);`](src/document.hpp): método que normaliza uma palavra, removendo caracteres não alfanuméricos, acentos e convertendo para letras minúsculas.
+  - [`struct WordFreq`](src/document.hpp): estrutura que armazena um termo e sua frequência em um documento.
+  - [`class Document`](src/document.hpp): classe que representa um documento a ser ranqueado:
+    - [`Document(const std::string &filename, std::unordered_set<std::string> stopWords)`](src/document.hpp): construtor da classe [`Document`](src/document.hpp), que recebe o nome do arquivo do documento e um conjunto de stopwords.
+    - [` std::unordered_set<std::string> stopWords`](src/document.hpp): conjunto de stopwords. 
+    - [`double relevance = 0`](src/document.hpp): relevância do documento.
+    - [`std::string filename`](src/document.hpp): nome do arquivo do documento.
+    - [`std::unordered_map<std::string, int> wordsFreq`](src/document.hpp): tabela hash que armazena os termos e suas frequências no documento.
+    - [`std::list<WordFreq> docWords`](src/document.hpp): lista encadeada que armazena os termos e suas frequências no documento.
+    - [`int totalWords = 0`](src/document.hpp): total de palavras no documento.
+    - [`void readFile()`](src/document.hpp): método que lê o arquivo do documento e armazena os termos e suas frequências na estrutura de dados selecionada.
+    - [`void addWord(const std::string &word)`](src/document.hpp): método que adiciona um termo na estrutura de dados selecionada.
+    - [`void imprimindoPalavras()`](src/document.hpp): método que imprime os termos e suas frequências no documento.
+    - [`bool operator==(const Document &other) const`](src/document.hpp): sobrecarga do operador de igualdade para a classe [`Document`](src/document.hpp).
+  
+  - [`namespace std`](src/document.hpp): namespace que contém a definição da função de hash para a classe [`Document`](src/document.hpp).
+
+  #### [ranking.hpp](src/ranking.hpp)
+
+  Neste arquivo, temos a definição da classe [`Ranking`](src/ranking.hpp), e inclui as declarações dos métodos e atributos que manipulam o ranqueamento dos documentos. A seguir estão os métodos e atributos da classe [`Ranking`](src/ranking.hpp):
+
+  - [`class Ranking`](src/ranking.hpp): classe que ranqueia os documentos:
+    - [`struct pairHash`](src/ranking.hpp): estrutura que define a função de hash para um par de strings.
+    - [`private:`](src/ranking.hpp): seção privada da classe [`Ranking`](src/ranking.hpp).
+      - [`std::vector<std::string> filenames`](src/ranking.hpp): vetor que armazena os nomes dos arquivos dos documentos.
+    - [`public:`](src/ranking.hpp): seção pública da classe [`Ranking`](src/ranking.hpp).
+      - [`Ranking(std::string phrase)`](src/ranking.hpp): construtor da classe [`Ranking`](src/ranking.hpp), que recebe a frase buscada.
+      - [`std::list<Document> documents`](src/ranking.hpp): lista encadeada que armazena os documentos.
+      - [`std::unordered_set<std::string> stopWords`](src/ranking.hpp): conjunto de stopwords.
+      - [`std::list<std::string> phraseWords`](src/ranking.hpp): lista encadeada que armazena os termos da frase buscada.
+      - [`std::unordered_map<std::string, double> wordsidf`](src/ranking.hpp): tabela hash que armazena os termos e suas frequências inversas em todos os documentos.
+      - [`void readStopWords()`](src/ranking.hpp): método que lê as stopwords.
+      - [`void readPhrase(const std::string &phrase)`](src/ranking.hpp): método que lê a frase buscada.
+      - [`double calculateIDF(const std::string &word)`](src/ranking.hpp): método que calcula a frequência inversa de um termo em todos os documentos.
+      - [`double calculateTFIDF(const std::string &term, Document doc)`](src/ranking.hpp): método que calcula o fator TF-IDF de um termo em um documento.
+      - [`void calculateRelevanceDoc()`](src/ranking.hpp): método que calcula a relevância dos documentos.
+      - [`void quickSort(std::list<Document> &documents, int left, int right)`](src/ranking.hpp): método que ordena os documentos em ordem decrescente de relevância.
+      - [`int partition(std::list<Document> &documents, int left, int right)`](src/ranking.hpp): método que divide o vetor de documentos em duas partes e ordena-os de acordo com a relevância.
 
 </div>
 
 <p align="right">(<a href="#readme-topo">voltar ao topo</a>)</p>
+
+### 📝 Funções Implementadas
+
+<div  align="justify">
+  
+  As funções implementadas no projeto são responsáveis por realizar a leitura dos documentos, normalizar os termos, calcular o fator TF/IDF de cada termo em cada documento, calcular a relevância dos documentos e ordená-los em ordem decrescente de relevância. A seguir, são apresentadas as funções implementadas no projeto:
+
+  #### Arquivo [main.cpp](src/main.cpp)
+
+  Arquivo principal que inicializa o programa, carrega documentos, realiza buscas e exibe os resultados.
+
+  - **Função `main()`**: Define uma lista de frases de busca e, para cada frase: 
+    1. Inicializa um objeto `Ranking` com a frase.
+    2. Calcula a relevância dos documentos.
+    3. Ordena os documentos pela relevância.
+    4. Exibe o nome e a relevância de cada documento no console.
+
+  #### Arquivo [document.cpp](src/document.cpp)
+
+  Arquivo que contém a implementação dos métodos da classe `Document`, responsável por ler e representar os documentos, além de normalizar os termos que os compõem.
+
+  - **Construtor[ `Document(const std::string &filename, std::unordered_set<std::string> stopWords)`](src/document.cpp)**: Construtor que inicializa `filename` e `stopWords`, chamando `readFile()` para processar o conteúdo do arquivo.
+
+  - **Método [`void Document::readFile()`](src/document.cpp)**: 
+    1. Lê cada palavra do arquivo, ignora palavras de parada e normaliza as palavras restantes. 
+    2. Remove caracteres especiais e divide palavras compostas para garantir precisão na frequência de palavras.
+
+  - **Método [`void Document::addWord(const std::string &word)`](src/document.cpp)**: 
+    1. Adiciona uma palavra ao documento. 
+    2. Se `OPTIMIZE` estiver ativado, armazena em `wordsFreq` (unordered_map); caso contrário, em `docWords` (list).
+
+  - **Método [`std::string normalize(const std::string &word)`](src/document.cpp)**: Normaliza uma palavra, convertendo caracteres acentuados em equivalentes sem acento e convertendo para minúsculas.
+
+  - **Método [`void Document::imprimindoPalavras()`](src/document.cpp)**: Imprime todas as palavras e suas frequências no console, de acordo com o modo de otimização (`OPTIMIZE`).
+
+
+  #### Arquivo [ranking.cpp](src/ranking.cpp)
+
+  Arquivo que contém a implementação dos métodos da classe `Ranking`, responsável por ler as frases a serem buscadas, armazenar as stopwords e calcular o fator TF/IDF de cada documento para cada termo e ranqueá-los em ordem decrescente.
+
+  - **Construtor [`Ranking(std::string phrase)`](src/ranking.cpp)**: Construtor que inicializa `documents` com base nos arquivos em `filenames`, lê palavras de parada e processa a frase de busca.
+
+  - **Método [`void Ranking::readStopWords()`](src/ranking.cpp)**: Lê o arquivo de stopwords e insere cada palavra, normalizada, em `stopWords`.
+
+  - **Método [`void Ranking::readPhrase(const std::string &phrase)`](src/ranking.cpp)**: Processa a frase de busca, removendo caracteres especiais, normalizando as palavras e ignorando palavras de parada.
+
+  - **Método [`double Ranking::calculateIDF(const std::string &term)`](src/ranking.cpp)**: Calcula o IDF de uma palavra, com base na proporção de documentos que a contêm.
+
+  - **Método [`double Ranking::calculateTFIDF(const std::string &term, Document doc)`](src/ranking.cpp)**: Calcula o valor TF-IDF de uma palavra específica em um documento, multiplicando o TF pelo IDF.
+
+  - **Método [`void Ranking::calculateRelevanceDoc()`](src/ranking.cpp)**: Para cada documento, calcula a relevância com base nas palavras da frase de busca.
+
+  - **Método [`void Ranking::quickSort(std::list<Document> &documents, int left, int right)`](src/ranking.cpp)**: Implementação do QuickSort para ordenar a lista de documentos de acordo com sua relevância.
+
+  - **Método [`int Ranking::partition(std::list<Document> &documents, int left, int right)`](src/ranking.cpp)**: Particiona o vetor de documentos em duas partes e ordena-os de acordo com a relevância.  
+  
+</div>
 
 ## 🏁 Conclusão
 
