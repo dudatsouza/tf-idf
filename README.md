@@ -440,14 +440,14 @@ Os resultados dos testes foram avaliados com base na precisão e no desempenho d
 </div> 
 
 <div align='center'>
-  <img src='./images/execucaoLista.png' alt='Execução sem Otimização' width='700px'>   
+  <img src='./images/execucaoLista.png' alt='Execução sem Otimização' width='800px'>   
   <p>Figura 1: Resultados da execução sem otimização.</p>
 </div>
 
 - **2° Execução**: Execução utilizando a otimização:
 
 <div align='center'>
-  <img src='./images/execucaoHash.png' alt='Execução com Otimização' width='700px'>   
+  <img src='./images/execucaoHash.png' alt='Execução com Otimização' width='800px'>   
   <p>Figura 2: Resultados da execução com otimização.</p>
 </div>
 
@@ -468,7 +468,7 @@ Para avaliar o desempenho do algoritmo **TF-IDF**, utilizamos duas estruturas de
   - **COMPORTAMENTO ESTRUTURAL:**
     - **Lista Encadeada (`std::list`):** A [`std::list`](https://www.cplusplus.com/reference/list/list/) é uma estrutura de dados que permite inserções e remoções eficientes em qualquer posição, mas possui uma desvantagem significativa em operações de busca. Como uma lista duplamente encadeada, [`std::list`](https://www.cplusplus.com/reference/list/list/) não possui acesso direto aos elementos e, para localizar a frequência de uma palavra, é necessário percorrer todos os elementos até encontrar o termo desejado. Em termos de complexidade, a busca em uma lista encadeada tem custo $O(n)$, onde $n$ é o número de palavras na lista. Isso torna a [`std::list`](https://www.cplusplus.com/reference/list/list/) menos eficiente quando é necessário realizar buscas rápidas e repetitivas, como no cálculo de **TF-IDF** para múltiplos termos em diferentes documentos.
 
-    - **Hash Table (`unordered_map`):** A [`unordered_map`](https://www.cplusplus.com/reference/unordered_map/) é uma estrutura de dados implementada em C++ que utiliza uma função de hash para mapear chaves (neste caso, palavras) diretamente para suas frequências. Isso permite uma busca em tempo constante $O(1)$ na maioria dos casos, já que o mapeamento direto evita a necessidade de percorrer a estrutura inteira. Em um contexto de ranqueamento de documentos, onde cada busca pode envolver múltiplos termos, essa eficiência na busca torna a [`unordered_map`](https://www.cplusplus.com/reference/unordered_map/) a estrutura ideal, especialmente ao lidar com termos raros e específicos que possuem alta relevância no algoritmo **TF-IDF**.
+    - **Hash Table (`unordered_map`):** O [`unordered_map`](https://www.cplusplus.com/reference/unordered_map/) é uma estrutura de dados implementada em C++ que utiliza uma função de hash para mapear chaves (neste caso, palavras) diretamente para suas frequências. Isso permite uma busca em tempo constante $O(1)$ na maioria dos casos, já que o mapeamento direto evita a necessidade de percorrer a estrutura inteira. Em um contexto de ranqueamento de documentos, onde cada busca pode envolver múltiplos termos, essa eficiência na busca torna o [`unordered_map`](https://www.cplusplus.com/reference/unordered_map/) a estrutura ideal, especialmente ao lidar com termos raros e específicos que possuem alta relevância no algoritmo **TF-IDF**.
 
 ### Resultados e Análise
 
@@ -476,17 +476,17 @@ Abaixo estão os tempos de execução obtidos para cada estrutura de dados:
   - *SEM OTIMIZAÇÃO (`std::list`):* **4 minutos, 10 segundos e 742 milissegundos.**
   - *COM OTIMIZAÇÃO (`unordered_map`):* **16 segundos e 100 milissegundos.**
 
-Esses resultados mostram que o uso da [`unordered_map`](https://www.cplusplus.com/reference/unordered_map/) proporciona uma melhoria significativa no desempenho do sistema, reduzindo drasticamente o tempo de execução. Essa diferença é especialmente evidente em buscas com termos específicos e menos frequentes, que são fundamentais para o cálculo do IDF (Inverso da Frequência de Documento) no **TF-IDF**. Ao buscar por termos raros, como *"Reino de Valença"*, a [`unordered_map`](https://www.cplusplus.com/reference/unordered_map/) permite acessar rapidamente as frequências de *"Reino"* e *"Valença"* em cada documento, sem precisar iterar por todos os termos. Em contraste, uma busca com [`std::list`](https://www.cplusplus.com/reference/list/list/) exigiria percorrer toda a lista para cada termo, aumentando significativamente o tempo de processamento.
+Esses resultados mostram que o uso do [`unordered_map`](https://www.cplusplus.com/reference/unordered_map/) proporciona uma melhoria significativa no desempenho do sistema, reduzindo drasticamente o tempo de execução. Essa diferença é especialmente evidente em buscas com termos específicos e menos frequentes, que são fundamentais para o cálculo do IDF (Inverso da Frequência de Documento) no **TF-IDF**. Ao buscar por termos raros, como *"Reino de Valença"*, o [`unordered_map`](https://www.cplusplus.com/reference/unordered_map/) permite acessar rapidamente as frequências de *"Reino"* e *"Valença"* em cada documento, sem precisar iterar por todos os termos. Em contraste, uma busca com [`std::list`](https://www.cplusplus.com/reference/list/list/) exigiria percorrer toda a lista para cada termo, aumentando significativamente o tempo de processamento.
 
 **Vantagens do Uso de [`unordered_map`](https://www.cplusplus.com/reference/unordered_map/) no Algoritmo TF-IDF**
 
-A escolha pela [`unordered_map`](https://www.cplusplus.com/reference/unordered_map/) oferece várias vantagens específicas para o algoritmo **TF-IDF**:
+A escolha pelo [`unordered_map`](https://www.cplusplus.com/reference/unordered_map/) oferece várias vantagens específicas para o algoritmo **TF-IDF**:
 
-  - *Acesso Rápido a Termos Específicos:* Como cada termo é mapeado diretamente para um índice, a [`unordered_map`](https://www.cplusplus.com/reference/unordered_map/) permite acessar a frequência de qualquer termo instantaneamente. Isso é particularmente útil ao ranquear documentos onde termos raros têm mais peso, pois o **TF-IDF** atribui uma relevância maior a termos menos frequentes.
+  - *Acesso Rápido a Termos Específicos:* Como cada termo é mapeado diretamente para um índice, o [`unordered_map`](https://www.cplusplus.com/reference/unordered_map/) permite acessar a frequência de qualquer termo instantaneamente. Isso é particularmente útil ao ranquear documentos onde termos raros têm mais peso, pois o **TF-IDF** atribui uma relevância maior a termos menos frequentes.
 
   - *Escalabilidade:* Em cenários com grandes volumes de dados ou documentos extensos, o tempo de execução usando [`unordered_map`](https://www.cplusplus.com/reference/unordered_map/) permanece quase constante para buscas, tornando-o mais escalável em comparação à [`std::list`](https://www.cplusplus.com/reference/list/list/).
 
-  - *Eficiência no Ranqueamento de Documentos:* Como o ranqueamento envolve múltiplas buscas de termos em cada documento, a eficiência da [`unordered_map`](https://www.cplusplus.com/reference/unordered_map/) em operações de busca resulta em uma experiência de processamento muito mais rápida, especialmente ao comparar o desempenho em um conjunto de documentos grandes e termos raros.
+  - *Eficiência no Ranqueamento de Documentos:* Como o ranqueamento envolve múltiplas buscas de termos em cada documento, a eficiência do [`unordered_map`](https://www.cplusplus.com/reference/unordered_map/) em operações de busca resulta em uma experiência de processamento muito mais rápida, especialmente ao comparar o desempenho em um conjunto de documentos grandes e termos raros.
 
 </div>
 
@@ -496,9 +496,10 @@ A escolha pela [`unordered_map`](https://www.cplusplus.com/reference/unordered_m
 
 <div align="justify">
 
-Além do **TF-IDF**, que se baseia em estatísticas de frequência de termos para ranquear documentos, outra abordagem comum em recuperação de informação é o uso de estruturas de dados hierárquicas, como `árvores` e `grafos`. Essas estruturas podem ser usadas para representar relações entre documentos e termos de forma a capturar conexões e similaridades entre os documentos de forma mais complexa e semântica.
+Além do **TF-IDF**, que se baseia em estatísticas de frequência de termos para ranquear documentos, outra abordagem comum em recuperação de informação é o uso de estruturas de dados hierárquicas, como `árvores` e `grafos`. Essas estruturas podem ser usadas para representar relações entre documentos e termos de forma a capturar conexões e similaridades entre os documentos de forma mais complexa e semântica. Com base nos estudo feitos sobre árvores e grafos para este projeto ([^2], [^3], [^4], [^5]), podemos considerar algumas abordagens hipotéticas para o ranqueamento de documentos:
 
 ### Estruturas de Árvores para Ranqueamento
+
 
   - **Árvores de Decisão:** Uma árvore de decisão poderia ser utilizada para ranquear documentos em relação a uma consulta, onde cada nó da árvore representa uma decisão baseada em um termo ou conjunto de termos. Ao navegar na árvore, o sistema poderia "filtrar" documentos com base em termos relevantes para a consulta, terminando em folhas que contêm os documentos mais relevantes. Essa abordagem permite uma navegação direcionada, reduzindo o número de documentos a serem ranqueados a partir de uma divisão hierárquica.
 
@@ -535,7 +536,7 @@ Portanto, o uso de árvores e grafos no ranqueamento de documentos proporciona u
 
 Para concluir, o projeto demonstrou a eficiência e a precisão do algoritmo **TF-IDF** na tarefa de ranqueamento de documentos, utilizando frequências de termos e inversão de frequência para calcular a relevância de cada documento em relação a uma consulta específica. A implementação em C++ com *Hash Table* e *lista encadeada* possibilitou uma análise comparativa do desempenho dessas estruturas, mostrando uma melhoria significativa em tempo de execução com o uso da *Hash Table*. Esse ganho de eficiência confirma a importância de selecionar estruturas de dados adequadas ao contexto da aplicação.
 
-Além disso, os testes realizados indicaram que o **TF-IDF** foi bem-sucedido em ranquear documentos relevantes para termos específicos, revelando a capacidade do algoritmo em identificar palavras-chave com precisão. Observou-se, também, que para frases irrelevantes ou que não continham correspondência direta com os documentos, o sistema respondeu adequadamente, atribuindo baixa relevância a esses documentos. Isso demonstrou a robustez do algoritmo na discriminação de termos que impactam diretamente a relevância do conteúdo.
+Além disso, os testes realizados indicaram que o **TF-IDF** foi bem-sucedido em ranquear documentos relevantes para termos específicos, revelando a capacidade do algoritmo em identificar palavras-chave com precisão. Observou-se, também, que para frases irrelevantes ou que não continham correspondência direta com os documentos, o sistema respondeu adequadamente, atribuindo baixa relevância a esses documentos. Isso demonstrou a robustez do algoritmo na discriminação de termos que impactam diretamente a relevância do conteúdo. Outra observação importante foi a acurácia do algoritmo ao lidar com sentenças completas de um documento. Nesse caso, mesmo que a frase seja exatamente uma que aparece no documento, não garante que ele será ranqueado como o mais relevante. Isso ocorre porque o algoritmo não leva em consideração a ordem das palavras, apenas a frequência de cada termo no documento por completo.
 
 Por fim, este trabalho também refletiu sobre o uso potencial de estruturas de dados alternativas, como árvores e grafos, que poderiam capturar relações semânticas e contextuais mais complexas entre documentos. Embora o **TF-IDF** seja eficaz e adequado para este tipo de ranqueamento, explorar grafos e árvores em projetos futuros poderá enriquecer a análise semântica, especialmente em contextos onde há interconexões entre os documentos.
   
@@ -686,6 +687,17 @@ Por fim, este trabalho também refletiu sobre o uso potencial de estruturas de d
 <a name="referencias">📚 Referências</a>
 
 [^1]: Spärck Jones, K. (1972). A statistical interpretation of term specificity and its application in retrieval. Journal of Documentation, 28(1), 11-21. (https://www.staff.city.ac.uk/~sbrp622/idfpapers/ksj_orig.pdf)
+
+[^2]: Philip L.H. Yu, Wai Ming Wan, and Paul H. Lee. Decision Tree Modeling for Ranking Data. (https://www.researchgate.net/publication/252998138_Decision_Tree_Modeling_for_Ranking_Data)
+
+[^3]: Ming Zhong, Mengchi Liu. Ranking the answer trees of graph search by both structure and content. (https://dl.acm.org/doi/abs/10.1145/2379307.2379314)
+
+[^4]: Claudio Lucchese, Franco Maria Nardini, salvatore Orlando, Raffaele Perego, Nicola Tonellotto, Rossano Venturini. QuickScorer: a Fast Algorithm to Rank Documents with
+Additive Ensembles of Regression Trees. (https://iris.unive.it/bitstream/10278/3661259/7/paper.pdf)
+
+[^5]: Rada Mihalcea. Graph-based Ranking Algorithms for Sentence Extraction, Applied to Text Summarization. (https://dl.acm.org/doi/pdf/10.3115/1219044.1219064)
+
+
 
 
 
