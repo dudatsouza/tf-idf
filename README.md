@@ -28,6 +28,13 @@ CEFET-MG Campus V <br>
     <li><a href="#-introdução">🔍 Introdução</a></li>
     <li>
       <a href="#-fundamentação-teórica">💡 Fundamentação Teórica</a>
+      <ul>
+        <li><a href='#tf-term-frequency'>TF (Term Frequency)</a></li>
+        <li><a href='#idf-inverse-document-frequency'>IDF (Inverse Document Frequency)</a></li>
+        <li><a href='#tf-idf-term-frequency-inverse-document-frequency'>TF-IDF (Term Frequency-Inverse Document Frequency)</a></li>
+        <li><a href='#relevância-dos-documentos'>Relevância dos Documentos</a></li>
+        <li><a href='#ranqueamento-dos-documentos'>Ranqueamento dos Documentos</a></li>
+      </ul>
     </li>
     <li>
       <a href="#-objetivos">🎯 Objetivos</a>
@@ -38,6 +45,13 @@ CEFET-MG Campus V <br>
     </li>
     <li>
       <a href="#-modelagem-de-aplicação">🔬 Modelagem de Aplicação</a>
+      <ul>
+        <li><a href='#leitura-dos-documentos'>Leitura dos Documentos</a></li>
+        <li><a href='#normalização-dos-textos'>Normalização dos Textos</a></li>
+        <li><a href='#cálculo-do-tf-idf'>Cálculo do TF-IDF</a></li>
+        <li><a href='#ranqueamento-dos-documentos'>Ranqueamento dos Documentos</a></li>
+        <li><a href='#estrutura-de-dados-utilizada'>Estrutura de Dados Utilizada</a></li>   
+      </ul>
     </li>
     <li>
       <a href="#%EF%B8%8F-metodologia">🗳️ Metodologia</a>
@@ -49,7 +63,22 @@ CEFET-MG Campus V <br>
       </ul>
     </li>
     <li>
-      <a href="#-testes-e-análises-dos-resultados">📊 Testes e Análises dos Resultados</a>
+      <a href="#-testes-e-resultados">📊 Testes e Resultados</a>
+      <ul>
+        <li><a href='#configuração-dos-testes'>Configuração dos Testes</a></li>
+        <li><a href='#execução'>Execução</a></li>
+        <li><a href='#testes-de-precisão'>Testes de Precisão</a></li>
+        <li><a href='#testes-de-desempenho'>Testes de Desempenho</a></li>
+        <li><a href="#resultados-e-análise">Resultados e Análises</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#-análise-hipotética-uso-de-árvoresgrafos-para-ranqueamento-de-documentos">🌳 Análise Hipotética: Uso de Árvores/Grafos para Ranqueamento de Documentos</a>
+      <ul>
+        <li><a href='#estruturas-de-árvores-para-ranqueamento'>Estruturas de Árvores para Ranqueamento</a></li>
+        <li><a href='#uso-de-grafos-para-capturar-relações-entre-termos-e-documentos'>Uso de Grafos para Capturar Relações entre Termos e Documentos</a></li>
+        <li><a href='#comparação-com-o-tf-idf'>Comparação com o TF-IDF</a></li>
+      </ul>
     </li>
     <li><a href="#-conclusão">🏁 Conclusão</a></li>
     <li>
@@ -492,7 +521,7 @@ A escolha pelo [`unordered_map`](https://www.cplusplus.com/reference/unordered_m
 
 <p align="right">(<a href="#readme-topo">voltar ao topo</a>)</p>
 
-## Análise Hipotética: Uso de Árvores/Grafos para Ranqueamento de Documentos
+## 🌳 Análise Hipotética: Uso de Árvores/Grafos para Ranqueamento de Documentos
 
 <div align="justify">
 
