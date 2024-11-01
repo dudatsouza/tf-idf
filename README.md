@@ -496,7 +496,7 @@ A escolha pelo [`unordered_map`](https://www.cplusplus.com/reference/unordered_m
 
 <div align="justify">
 
-Além do **TF-IDF**, que se baseia em estatísticas de frequência de termos para ranquear documentos, outra abordagem comum em recuperação de informação é o uso de estruturas de dados hierárquicas, como `árvores` e `grafos`. Essas estruturas podem ser usadas para representar relações entre documentos e termos de forma a capturar conexões e similaridades entre os documentos de forma mais complexa e semântica. Com base nos estudo feitos sobre árvores e grafos para este projeto ([^2], [^3], [^4], [^5]), podemos considerar algumas abordagens hipotéticas para o ranqueamento de documentos:
+Além do **TF-IDF**, que se baseia em estatísticas de frequência de termos para ranquear documentos, outra abordagem comum em recuperação de informação é o uso de estruturas de dados hierárquicas, como `árvores` e `grafos`. Essas estruturas podem ser usadas para representar relações entre documentos e termos de forma a capturar conexões e similaridades entre os documentos de forma mais complexa e semântica. Com base nos estudo feitos sobre árvores e grafos para esse tipo de problema de ranqueamento, ([^2], [^3], [^4], [^5]), podemos considerar algumas abordagens hipotéticas para o ranqueamento de documentos:
 
 ### Estruturas de Árvores para Ranqueamento
 
